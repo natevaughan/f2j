@@ -79,7 +79,6 @@ var f2j = (function() {
         }
         var form = document.getElementById(formId);
         rest(form.method, form.action, successCallback, errorCallback, {}, serializeArray(form));
-        // rndr.post(form.action, successCallback, errorCallback, {}, serializeArray(form));
         return false
     };
 })();
