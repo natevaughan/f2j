@@ -20,6 +20,26 @@ var f2j = (function() {
             xhr.send()
         }
     }
+
+    function getTypedValue(type, value) {
+        // if type is user-defined input, send as string
+        if (type === 'textarea' || type === 'text') {
+            return value
+        }
+        if (value === 'true') {
+            return true
+        }
+        if (value === 'false') {
+            return false
+        }
+        var numberValue = Number(value)
+        if (!Number.isNaN(numberValue)) {
+            return numberValue
+        }
+        return value
+    }
+
+
     /*!
      * adapted from Chris Ferdinandi
      * https://vanillajstoolkit.com/helpers/serializearray/
@@ -53,15 +73,16 @@ var f2j = (function() {
                 }
             }
 
-            // Convert field data to a query string
+            // Convert field data to object properties
             else if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
+                var value = getTypedValue(field.type, field.value)
                 if (Array.isArray(serialized[field.name])) {
-                    serialized[field.name].push(field.value)
+                    serialized[field.name].push(value)
                 } else if (typeof serialized[field.name] === undefinedType) {
-                    serialized[field.name] = field.value
+                    serialized[field.name] = value
                 } else {
                     var existing2 = serialized[field.name];
-                    serialized[field.name] = [existing2, field.value]
+                    serialized[field.name] = [existing2, value]
                 }
             }
         }
@@ -70,14 +91,13 @@ var f2j = (function() {
     };
     var noop = function() {};
 
-    return function(formId, successCallback, errorCallback) {
+    return function(form, successCallback, errorCallback) {
         if (typeof successCallback === undefinedType) {
             successCallback = noop
         }
         if (typeof errorCallback === undefinedType) {
             errorCallback = noop
         }
-        var form = document.getElementById(formId);
         rest(form.method, form.action, successCallback, errorCallback, {}, serializeArray(form));
         return false
     };
