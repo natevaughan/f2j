@@ -72,7 +72,7 @@ A user's click to the "Save" button results in:
 
 ## Data types
 
-F2j converts the string literals "true" and "false" to boolean values and numbers like "5" or "3.4" to unquoted numbers. User-defined inputs `<textarea>` and `<input type="text">` will not be type converted and will always be sent as strings.
+F2j converts the string literals `"true"` and `"false"` to the boolean values `true` and `false` before submission and numeric string values like `"5"` and `"3.4"` to unquoted numbers `5` and `3.4`. User-defined inputs `<textarea>` and `<input type="text">` will not be type converted and will always be sent as strings.
 
 ## Callbacks after form submission
 Callbacks can be passed to `f2j`:
