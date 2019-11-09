@@ -18,10 +18,12 @@ To start using `f2j`, import the minified or unminified library
 ```
 <script type="text/javascript" src="/js/f2j.min.js"></script>
 ```
-Simply add the attribute `onsubmit="return f2j('<form-id>')` to any form, passing the form's `id` as the `'<form-id>'`. F2j will send a JSON POST request, turning each form element's `name` into the JSON key and `value` into the value.For example: 
+Simply add the attribute `onsubmit="return f2j(this)` to any form. F2j will transform the form into a JSON POST request, turning each form element's `name` into the JSON key and `value` into the value. For example: 
 ```
 <form action="/my/json/api" method="post" onsubmit="return f2j(this)">
         <input type="hidden" name="questionId" value="12345">
+        <input type="radio" name="agree" value="true" /> Agree
+        <input type="radio" name="agree" value="false" checked /> Disagree
         <label>
             <p>What feedback do you have?</p>
             <textarea name="freeResponseFeedback">I have a few suggestions...</textarea>
@@ -33,8 +35,9 @@ Simply add the attribute `onsubmit="return f2j('<form-id>')` to any form, passin
 Results in the following JSON POST request:
 ```
 {
-    "questionId":"12345",
-    "freeResponseFeedback":"I have a few suggestions...",
+    "questionId": 12345,
+    "agree": false,
+    "freeResponseFeedback": "I have a few suggestions...",
 }
 ```
 
@@ -52,7 +55,6 @@ F2j supports the following HTML form elements:
  ```
  <form action="/my/json/api" method="post" onsubmit="return f2j(this)">
         <button type="submit" name="myAction" value="save">Save</button>
-        <button type="submit" name="myAction" value="skip">Skip</button>
  </form>
  ```
 A user's click to the "Save" button results in: 
@@ -77,8 +79,7 @@ function myErrorCallback(data) {
     alert(data)
 }
 <form action="/my/json/api" method="post" onsubmit="return f2j(this, mySuccessCallback, myErrorCallback)">
-       <button type="submit" name="questionAction" value="save">Save</button>
-       <button type="submit" name="questionAction" value="skip">Skip</button>
+       <button type="submit" name="myAction" value="continue">Continue</button>
 </form>
 ```
 
@@ -89,4 +90,3 @@ The following sources served as the basis for creating `f2j`:
 - W3schools AJAX introduction: https://www.w3schools.com/xml/ajax_intro.asp
 - Dov Amir's Stack Overflow post: https://stackoverflow.com/a/8567149
 - Chris Ferdinandi's blog https://vanillajstoolkit.com/helpers/serializearray/
-
