@@ -1,24 +1,28 @@
 # f2j: Form to JSON
 
-A single function for transforming HTML forms into JSON POST requests.
+A Javascript shim to transform HTML forms into JSON POST requests.
+ 
+Add `onsubmit="return f2j(this)"` to any form and f2j will submit the form as a POST request containing `application/json` instead of key-value `application/form-urlencoded` parameters. 
 
-If you're like me, you hate overweight Javascript libraries or frameworks and are looking for tools that are:
+## Benefits
+
+F2j is:
 - Lightweight, quick to load
 - Interoperable, able to work easily with other libraries
 - Transparent, with minimal domain-specific syntax
 
 F2j exports a single function, `f2j`, which weighs in at approx 1.4kb (minified), depends on no other JS libraries, and is extremely simple to use and understand. Use f2j for:
-- Prototyping; get a frontend that interacts with a REST API up and running in seconds
-- Vanilla JS; projects that eschew full-blown frameworks
-- Adding interactivity to HTML pages without committing to a frontend framework
-- Reactive DOM updates; POST some JSON data and then do something with the response
+- *Prototyping:* get a frontend that interacts with a REST API up and running in seconds
+- *Vanilla JS:* projects that eschew full-blown frameworks
+- *Lightweight interactivity:* add behavior to HTML pages without committing to a frontend framework
+- *Reactive DOM updates:* use f2j's callbacks with your favorite rendering library to update the DOM
 
 ## Usage
 To start using `f2j`, import the minified or unminified library
 ```
 <script type="text/javascript" src="/js/f2j.min.js"></script>
 ```
-Simply add the attribute `onsubmit="return f2j(this)` to any form. F2j will transform the form into a JSON POST request, turning each form element's `name` into the JSON key and `value` into the value. For example: 
+Add the attribute `onsubmit="return f2j(this)` to the form you would like to submit as JSON. F2j will submit a JSON POST request, turning each form element's `name` into the JSON key and `value` into the value. For example: 
 ```
 <form action="/my/json/api" method="post" onsubmit="return f2j(this)">
         <input type="hidden" name="questionId" value="12345">
@@ -40,6 +44,8 @@ Results in the following JSON POST request:
     "freeResponseFeedback": "I have a few suggestions...",
 }
 ```
+
+*Note:* the `return` before calling f2j (e.g. `return f2j(this)`) is necessary to prevent duplicate form submission.
 
 ## Supported elements
 
