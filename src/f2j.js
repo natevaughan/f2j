@@ -4,9 +4,9 @@ var f2j = (function() {
     function rest(method, path, successCallback, errorCallback, headers, body) {
         var xhr = new XMLHttpRequest;
         xhr.onreadystatechange = function() {
-            4 === xhr.readyState && ((200 <= xhr.status && 299 >= xhr.status) ? successCallback((xhr.responseText !== '' ? JSON.parse(xhr.responseText) : '')) : errorCallback(xhr))
+            4 === xhr.readyState && ((200 <= xhr.status && 299 >= xhr.status) ? successCallback((xhr.responseText !== '' ? JSON.parse(xhr.responseText) : '')) : errorCallback((xhr.responseText !== '' ? JSON.parse(xhr.responseText) : '')))
         };
-        xhr.open(method, path, !0);
+        xhr.open(method.toUpperCase(), path, !0);
         if (typeof headers === 'object') {
             var propNames = Object.getOwnPropertyNames(headers);
             propNames.forEach(function(name) {
@@ -91,14 +91,17 @@ var f2j = (function() {
     };
     var noop = function() {};
 
-    return function(form, successCallback, errorCallback) {
+    return function(form, successCallback, errorCallback, method) {
         if (typeof successCallback === undefinedType) {
             successCallback = noop
         }
         if (typeof errorCallback === undefinedType) {
             errorCallback = noop
         }
-        rest(form.method, form.action, successCallback, errorCallback, {}, serializeArray(form));
+        if (typeof method === undefinedType) {
+            method = 'POST'
+        }
+        rest(method, form.action, successCallback, errorCallback, {}, serializeArray(form));
         return false
     };
 })();

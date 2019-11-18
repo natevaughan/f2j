@@ -24,7 +24,7 @@ To start using `f2j`, import the minified or unminified library
 ```
 Add the attribute `onsubmit="return f2j(this)` to the form you would like to submit as JSON. F2j will submit a JSON POST request, turning each form element's `name` into the JSON key and `value` into the value. For example: 
 ```
-<form action="/my/json/api" method="post" onsubmit="return f2j(this)">
+<form action="/my/json/api" onsubmit="return f2j(this)">
         <input type="hidden" name="questionId" value="12345">
         <input type="radio" name="agree" value="true" /> Agree
         <input type="radio" name="agree" value="false" checked /> Disagree
@@ -59,7 +59,7 @@ F2j supports the following HTML form elements:
  
  Note that `<button type="submit">` and `<submit>` elements must have `name` and `value` attributes to be serialized as JSON; otherwise, they will simply act to submit the form. For example:
  ```
- <form action="/my/json/api" method="post" onsubmit="return f2j(this)">
+ <form action="/my/json/api" onsubmit="return f2j(this)">
         <button type="submit" name="myAction" value="save">Save</button>
  </form>
  ```
@@ -84,10 +84,20 @@ function mySuccessCallback(data) {
 function myErrorCallback(data) {
     alert(data)
 }
-<form action="/my/json/api" method="post" onsubmit="return f2j(this, mySuccessCallback, myErrorCallback)">
+<form action="/my/json/api" onsubmit="return f2j(this, mySuccessCallback, myErrorCallback)">
        <button type="submit" name="myAction" value="continue">Continue</button>
 </form>
 ```
+
+## Requests with POST, PUT, PATCH, and DELETE
+
+F2j supports all HTTP methods and defaults to POST. To use PUT, PATCH, DELETE, or other HTTP verbs, pass the desired HTTP method string as the 4th argument. You may pass either upper or lower case:
+
+```
+<form action="/my/json/api" onsubmit="return f2j(this, successCallback, errorCallback, 'patch')">
+    ...
+</form>
+``` 
 
 ## Sources
 
