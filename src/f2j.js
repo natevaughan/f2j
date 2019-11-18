@@ -64,11 +64,8 @@ var f2j = (function() {
                     if (!field.options[n].selected) continue;
                     if (Array.isArray(serialized[field.name])) {
                         serialized[field.name].push(field.options[n].value)
-                    } else if (typeof serialized[field.name] === undefinedType) {
-                        serialized[field.name] = field.options[n].value
                     } else {
-                        var existing1 = serialized[field.name];
-                        serialized[field.name] = [existing1, field.options[n].value]
+                        serialized[field.name] = [field.options[n].value]
                     }
                 }
             }
@@ -78,11 +75,12 @@ var f2j = (function() {
                 var value = getTypedValue(field.type, field.value)
                 if (Array.isArray(serialized[field.name])) {
                     serialized[field.name].push(value)
-                } else if (typeof serialized[field.name] === undefinedType) {
+                } else if (typeof serialized[field.name] === undefinedType
+                    // never send 'checkbox' fields as individual values
+                    && field.type !== 'checkbox') {
                     serialized[field.name] = value
                 } else {
-                    var existing2 = serialized[field.name];
-                    serialized[field.name] = [existing2, value]
+                    serialized[field.name] = [value]
                 }
             }
         }
